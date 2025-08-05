@@ -16,8 +16,7 @@ public class ThreadLocalLogTrace implements LogTrace {
         syncTraceId();
         TraceId traceId = traceIdHolder.get();
         Long startTimeMs = System.currentTimeMillis();
-        log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX,
-                traceId.getLevel()), message);
+        log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId, startTimeMs, message);
     }
 
@@ -36,13 +35,9 @@ public class ThreadLocalLogTrace implements LogTrace {
         long resultTimeMs = stopTimeMs - status.getStartTimeMs();
         TraceId traceId = status.getTraceId();
         if (e == null) {
-            log.info("[{}] {}{} time={}ms", traceId.getId(),
-                    addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(),
-                    resultTimeMs);
+            log.info("[{}] {}{} time={}ms", traceId.getId(), addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs);
         } else {
-            log.info("[{}] {}{} time={}ms ex={}", traceId.getId(),
-                    addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs,
-                    e.toString());
+            log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs, e.toString());
         }
         releaseTraceId();
     }
