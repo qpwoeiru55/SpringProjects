@@ -12,12 +12,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 public class BeanPostProcessorTest {
+
     @Test
-    void postProcessor() {
+    void basicConfig() {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanPostProcessorConfig.class);
+
         //beanA 이름으로 B 객체가 빈으로 등록된다.
         B b = applicationContext.getBean("beanA", B.class);
         b.helloB();
+
         //A는 빈으로 등록되지 않는다.
         Assertions.assertThrows(NoSuchBeanDefinitionException.class, () -> applicationContext.getBean(A.class));
     }
@@ -52,6 +55,7 @@ public class BeanPostProcessorTest {
 
     @Slf4j
     static class AToBPostProcessor implements BeanPostProcessor {
+
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
             log.info("beanName={} bean={}", beanName, bean);
