@@ -5,6 +5,7 @@ import hello.proxy.trace.TraceStatus;
 import hello.proxy.trace.logtrace.LogTrace;
 
 public class OrderServiceConcreteProxy extends OrderServiceV2 {
+
     private final OrderServiceV2 target;
     private final LogTrace logTrace;
 
@@ -16,6 +17,7 @@ public class OrderServiceConcreteProxy extends OrderServiceV2 {
 
     @Override
     public void orderItem(String itemId) {
+
         TraceStatus status = null;
         try {
             status = logTrace.begin("OrderService.orderItem()");

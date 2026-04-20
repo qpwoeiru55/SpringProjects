@@ -5,6 +5,7 @@ import hello.proxy.trace.TraceStatus;
 import hello.proxy.trace.logtrace.LogTrace;
 
 public class OrderControllerConcreteProxy extends OrderControllerV2 {
+
     private final OrderControllerV2 target;
     private final LogTrace logTrace;
 
@@ -27,5 +28,10 @@ public class OrderControllerConcreteProxy extends OrderControllerV2 {
             logTrace.exception(status, e);
             throw e;
         }
+    }
+
+    @Override
+    public String noLog() {
+        return target.noLog();
     }
 }

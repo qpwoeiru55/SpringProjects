@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class ProxyFactoryConfigV1 {
+
     @Bean
     public OrderControllerV1 orderControllerV1(LogTrace logTrace) {
         OrderControllerV1 orderController = new OrderControllerV1Impl(orderServiceV1(logTrace));
@@ -36,7 +37,8 @@ public class ProxyFactoryConfigV1 {
 
     @Bean
     public OrderRepositoryV1 orderRepositoryV1(LogTrace logTrace) {
-        OrderRepositoryV1 orderRepository = new OrderRepositoryV1Impl();
+        OrderRepositoryV1Impl orderRepository = new OrderRepositoryV1Impl();
+
         ProxyFactory factory = new ProxyFactory(orderRepository);
         factory.addAdvisor(getAdvisor(logTrace));
         OrderRepositoryV1 proxy = (OrderRepositoryV1) factory.getProxy();
@@ -50,7 +52,6 @@ public class ProxyFactoryConfigV1 {
         pointcut.setMappedNames("request*", "order*", "save*");
         //advice
         LogTraceAdvice advice = new LogTraceAdvice(logTrace);
-        //advisor = pointcut + advice
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
 }

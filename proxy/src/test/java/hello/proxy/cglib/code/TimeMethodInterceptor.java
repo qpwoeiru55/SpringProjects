@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class TimeMethodInterceptor implements MethodInterceptor {
+
     private final Object target;
 
     public TimeMethodInterceptor(Object target) {
@@ -15,11 +16,11 @@ public class TimeMethodInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         log.info("TimeProxy 실행");
         long startTime = System.currentTimeMillis();
 
-        Object result = proxy.invoke(target, args);
+        Object result = methodProxy.invoke(target, args);
 
         long endTime = System.currentTimeMillis();
         long resultTime = endTime - startTime;

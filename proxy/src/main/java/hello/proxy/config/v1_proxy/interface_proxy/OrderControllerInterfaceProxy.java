@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class OrderControllerInterfaceProxy implements OrderControllerV1 {
+
     private final OrderControllerV1 target;
     private final LogTrace logTrace;
 
     @Override
     public String request(String itemId) {
+
         TraceStatus status = null;
         try {
             status = logTrace.begin("OrderController.request()");

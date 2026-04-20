@@ -5,6 +5,7 @@ import hello.proxy.trace.TraceStatus;
 import hello.proxy.trace.logtrace.LogTrace;
 
 public class OrderRepositoryConcreteProxy extends OrderRepositoryV2 {
+
     private final OrderRepositoryV2 target;
     private final LogTrace logTrace;
 
@@ -17,7 +18,7 @@ public class OrderRepositoryConcreteProxy extends OrderRepositoryV2 {
     public void save(String itemId) {
         TraceStatus status = null;
         try {
-            status = logTrace.begin("OrderRepository.save()");
+            status = logTrace.begin("OrderRepository.request()");
             //target 호출
             target.save(itemId);
             logTrace.end(status);

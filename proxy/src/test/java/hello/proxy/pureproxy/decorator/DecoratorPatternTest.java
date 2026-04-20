@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 @Slf4j
 public class DecoratorPatternTest {
+
     @Test
     void noDecorator() {
         Component realComponent = new RealComponent();

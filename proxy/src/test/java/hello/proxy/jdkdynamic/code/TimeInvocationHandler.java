@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class TimeInvocationHandler implements InvocationHandler {
+
     private final Object target;
 
     public TimeInvocationHandler(Object target) {
