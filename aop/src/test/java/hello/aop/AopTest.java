@@ -4,25 +4,26 @@ import hello.aop.order.OrderRepository;
 import hello.aop.order.OrderService;
 import hello.aop.order.aop.*;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 @Slf4j
-//@Import(AspectV2.class) //추가
+@SpringBootTest
+//@Import(AspectV1.class)
+//@Import(AspectV2.class)
 //@Import(AspectV3.class)
 //@Import(AspectV4Pointcut.class)
 //@Import({AspectV5Order.LogAspect.class, AspectV5Order.TxAspect.class})
 @Import(AspectV6Advice.class)
-@SpringBootTest
 public class AopTest {
+
     @Autowired
     OrderService orderService;
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -39,6 +40,8 @@ public class AopTest {
 
     @Test
     void exception() {
-        assertThatThrownBy(() -> orderService.orderItem("ex")).isInstanceOf(IllegalStateException.class);
+        Assertions.assertThatThrownBy(() -> orderService.orderItem("ex"))
+                .isInstanceOf(IllegalStateException.class);
     }
+
 }
