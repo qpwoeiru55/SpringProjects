@@ -2,16 +2,18 @@ package hello.aop.pointcut;
 
 import hello.aop.member.MemberServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 
 import java.lang.reflect.Method;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 public class ExecutionTest {
+
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     Method helloMethod;
 
@@ -19,7 +21,6 @@ public class ExecutionTest {
     public void init() throws NoSuchMethodException {
         helloMethod = MemberServiceImpl.class.getMethod("hello", String.class);
     }
-
 
     @Test
     void printMethod() {
@@ -77,10 +78,9 @@ public class ExecutionTest {
     }
 
     @Test
-    void packageExactMatchFalse() {
+    void packageExactFalse() {
         pointcut.setExpression("execution(* hello.aop.*.*(..))");
-        assertThat(pointcut.matches(helloMethod,
-                MemberServiceImpl.class)).isFalse();
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isFalse();
     }
 
     @Test
@@ -110,14 +110,15 @@ public class ExecutionTest {
     @Test
     void typeMatchInternal() throws NoSuchMethodException {
         pointcut.setExpression("execution(* hello.aop.member.MemberServiceImpl.*(..))");
+
         Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
         assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isTrue();
     }
 
-    //포인트컷으로 지정한 MemberService 는 internal 이라는 이름의 메서드가 없다.
     @Test
     void typeMatchNoSuperTypeMethodFalse() throws NoSuchMethodException {
         pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
+
         Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
         assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isFalse();
     }
@@ -147,7 +148,6 @@ public class ExecutionTest {
     }
 
     //숫자와 무관하게 모든 파라미터, 모든 타입 허용
-    //파라미터가 없어도 됨
     //(), (Xxx), (Xxx, Xxx)
     @Test
     void argsMatchAll() {
@@ -156,11 +156,12 @@ public class ExecutionTest {
     }
 
     //String 타입으로 시작, 숫자와 무관하게 모든 파라미터, 모든 타입 허용
-    //(String), (String, Xxx), (String, Xxx, Xxx) 허용
+    //(String), (String, Xxx), (String, Xxx, Xxx)
     @Test
     void argsMatchComplex() {
         pointcut.setExpression("execution(* *(String, ..))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
+
 
 }
